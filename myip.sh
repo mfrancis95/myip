@@ -11,21 +11,24 @@ local_ip() {
 }
 
 show_usage() {
-    echo "Usage: myip [OPTION] [OPTION]"
-    echo -e "Where OPTION is one of:\n"
-    echo -e "  -6, --ipv6\tRetrieve IPv6."
-    echo -e "  -l, --local\tRetrieve local IP."
+    echo 'Usage: myip [OPTION] [OPTION]'
+    echo -e 'Where OPTION is one of:\n'
+    echo -e '  -6, --ipv6\tRetrieve IPv6.'
+    echo -e '  -l, --local\tRetrieve local IP.'
+    exit $1
 }
 
 if [ $# -eq 0 ]; then
-    curl "http://v4.ident.me" 2> /dev/null && echo
+    curl 'https://v4.ident.me' 2> /dev/null && echo
 else
     if [ "$1" == "-6" ] || [ "$1" == "--ipv6" ]; then
         if [ "$2" == "-l" ] || [ "$2" == "--local" ]; then
             local_ip 6
         else
-            curl "http://v6.ident.me" 2> /dev/null && echo
+            curl 'https://v6.ident.me' 2> /dev/null && echo
         fi
+    elif [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+        show_usage 0
     elif [ "$1" == "-l" ] || [ "$1" == "--local" ]; then
         if [ "$2" == "-6" ] || [ "$2" == "--ipv6" ]; then
             local_ip 6
@@ -35,6 +38,6 @@ else
     elif [ "$1" == "-6l" ] || [ "$1" == "-l6" ]; then
         local_ip 6
     else
-        show_usage
+        show_usage 1
     fi
 fi
